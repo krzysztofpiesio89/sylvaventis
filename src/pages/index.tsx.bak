@@ -1,0 +1,53 @@
+// Components
+import Hero from '@/components/Index/Hero.component';
+import DisplayProducts from '@/components/Product/DisplayProducts.component';
+import Layout from '@/components/Layout/Layout.component';
+
+// Utilities
+import client from '@/utils/apollo/ApolloClient';
+
+// Types
+import type { NextPage, GetStaticProps, InferGetStaticPropsType } from 'next';
+
+// GraphQL
+import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
+
+/**
+ * Main index page
+ * @function Index
+ * @param {InferGetStaticPropsType<typeof getStaticProps>} products
+ * @returns {JSX.Element} - Rendered component
+ */
+
+import { useTranslation } from 'next-i18next/pages';
+import { serverSideTranslations } from 'next-i18next/pages/serverSideTranslations';
+
+const Index: NextPage = ({
+  products,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { t } = useTranslation('common');
+  return (
+    <Layout title={t('home')}>
+      <Hero />
+      {products && <DisplayProducts products={products} />}
+    </Layout>
+  );
+};
+
+export default Index;
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const { data, loading, networkStatus } = await client.query({
+    query: FETCH_ALL_PRODUCTS_QUERY,
+  });
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+      products: data.products.nodes,
+      loading,
+      networkStatus,
+    },
+    revalidate: 60,
+  };
+};

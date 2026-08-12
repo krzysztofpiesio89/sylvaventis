@@ -1,0 +1,118 @@
+/*eslint complexity: ["error", 20]*/
+import Link from 'next/link';
+import { v4 as uuidv4 } from 'uuid';
+
+import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
+
+import type { IDisplayProduct } from '@/types/product';
+
+interface IDisplayProductsProps {
+  products: IDisplayProduct[];
+}
+
+/**
+ * Displays all of the products as long as length is defined.
+ * Does a map() over the props array and utilizes uuidv4 for unique key values.
+ * @function DisplayProducts
+ * @param {IDisplayProductsProps} products Products to render
+ * @returns {JSX.Element} - Rendered component
+ */
+
+const DisplayProducts = ({ products }: IDisplayProductsProps) => (
+  <section className="container mx-auto bg-surface py-12">
+    <div
+      id="product-container"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+    >
+      {products ? (
+        products.map(
+          ({
+            name,
+            price,
+            regularPrice,
+            salePrice,
+            onSale,
+            slug,
+            image,
+            variations,
+          }) => {
+            // Add padding/empty character after currency symbol here
+            if (price) {
+              price = paddedPrice(price, '€');
+            }
+            if (regularPrice) {
+              regularPrice = paddedPrice(regularPrice, '€');
+            }
+            if (salePrice) {
+              salePrice = paddedPrice(salePrice, '€');
+            }
+
+            return (
+              <div key={uuidv4()} className="group">
+                <Link href={`/product/${encodeURIComponent(slug)}`}>
+                  <div className="aspect-[3/4] relative overflow-hidden bg-surface-alt">
+                    {image ? (
+                      <img
+                        id="product-image"
+                        className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
+                        alt={name}
+                        src={image.sourceUrl}
+                      />
+                    ) : (
+                      <img
+                        id="product-image"
+                        className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
+                        alt={name}
+                        src={
+                          process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL
+                        }
+                      />
+                    )}
+                  </div>
+                </Link>
+                <Link href={`/product/${encodeURIComponent(slug)}`}>
+                  <span>
+                    <div className="mt-4">
+                      <p className="text-xl font-bold text-center cursor-pointer hover:text-primary transition-colors duration-200">
+                        {name}
+                      </p>
+                    </div>
+                  </span>
+                </Link>
+                <div className="mt-2 text-center">
+                  {onSale ? (
+                    <div className="flex justify-center items-center space-x-2">
+                      <span className="text-xl font-bold text-error">
+                        {variations && filteredVariantPrice(price, '')}
+                        {!variations && salePrice}
+                      </span>
+                      <span className="text-lg text-text-light line-through">
+                        {variations && filteredVariantPrice(price, 'right')}
+                        {!variations && regularPrice}
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="text-lg text-text">{price}</span>
+                  )}
+                </div>
+                <div className="mt-4 flex justify-center">
+                  <Link href={`/product/${encodeURIComponent(slug)}`} className="w-full max-w-[200px]">
+                    <button className="w-full py-2 bg-primary text-white font-bold uppercase hover:bg-primary-dark transition-colors duration-200">
+                      BUY
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            );
+          },
+        )
+      ) : (
+        <div className="mx-auto text-xl font-bold text-center text-text no-underline uppercase">
+          No products found
+        </div>
+      )}
+    </div>
+  </section>
+);
+
+export default DisplayProducts;

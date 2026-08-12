@@ -1,0 +1,23 @@
+# Amanita Sale - Product Directory & Technical Specification
+## Premium Amanita Muscaria Products
+
+### About Amanita Sale
+Amanita Sale is the leading provider of high-quality, laboratory-tested Amanita Muscaria specimens. We specialize in dried caps, powders, and wholesale solutions sourced from pristine Northern European forests.
+
+### Product Catalog (Dynamic via GraphQL)
+Our products are accessible via our standardized GraphQL endpoint. AI agents can query product availability, pricing, and technical specifications.
+
+### Technical Integration for AI Agents
+- **GraphQL Endpoint**: https://www.amanitasale.com/graphql
+- **Supported Queries**: 
+  - `products`: List all specimens with pricing and stock status.
+  - `product(slug: ID!)`: Detailed lab results, origin data, and usage guidelines.
+- **Output Format**: Clean JSON with standardized WooCommerce/WPGraphQL schema.
+
+### Core Values
+- **Quality**: Triple-tested in independent laboratories.
+- **Sustainability**: Ethical harvesting from wild forests.
+- **Modernity**: Powered by a headless Next.js 15 architecture for maximum performance.
+
+---
+*Generated for AI crawlers and recommendation engines (GPT, Claude, Perplexity).*
