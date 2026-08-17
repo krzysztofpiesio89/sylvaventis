@@ -1,0 +1,10 @@
+# Ignore vulnerabilities with no stable fixes available for Next 16/React 19 environment
+CVE-2026-67213
+CVE-2026-67214
+CVE-2026-64641
+CVE-2026-64642
+CVE-2026-64645
+CVE-2026-64649
+CVE-2026-45623
+CVE-2026-73646
+GHSA-f88m-g3jw-g9cj
