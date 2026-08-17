@@ -25,9 +25,7 @@ jobs:
           NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL: "https://via.placeholder.com/600"
         run: npm run build
 
-      - name: Start server
-        env:
-          NEXT_PUBLIC_GRAPHQL_URL: ${{ secrets.NEXT_PUBLIC_GRAPHQL_URL }}
+      - name: Run Lighthouse CI
         run: |
           npm run start &
           echo "Waiting for server to be ready..."
@@ -35,14 +33,7 @@ jobs:
             sleep 5
           done
           sleep 10
-
-      - name: Run Lighthouse CI
-        run: |
           npm run lhci:perf || npx @lhci/cli autorun
         env:
+          NEXT_PUBLIC_GRAPHQL_URL: ${{ secrets.NEXT_PUBLIC_GRAPHQL_URL }}
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Stop server
-        if: always()
-        run: |
-          pkill -f "next start" || true
