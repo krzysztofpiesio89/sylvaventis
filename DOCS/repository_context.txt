@@ -271,7 +271,9 @@ src/
 .gitignore
 .npmrc
 .prettierrc
+.trivyignore
 DESIGN_REFERENCE.md
+lighthouserc.js
 next-env.d.ts
 next-i18next.config.js
 next.config.js
@@ -7615,6 +7617,20 @@ legacy-peer-deps=true
 }
 ````
 
+## File: .trivyignore
+````
+# Ignore vulnerabilities with no stable fixes available for Next 16/React 19 environment
+CVE-2026-67213
+CVE-2026-67214
+CVE-2026-64641
+CVE-2026-64642
+CVE-2026-64645
+CVE-2026-64649
+CVE-2026-45623
+CVE-2026-73646
+GHSA-f88m-g3jw-g9cj
+````
+
 ## File: DESIGN_REFERENCE.md
 ````markdown
 # Sylvaventis — Design & Architecture Reference
@@ -7967,6 +7983,21 @@ Accent/Nav:  „Outfit" (geometric sans, uppercase tracking)
 > i filozofią „natura bez sztuczności".
 ````
 
+## File: lighthouserc.js
+````javascript
+module.exports = {
+  ci: {
+    collect: {
+      url: ['http://localhost:3000/'],
+      numberOfRuns: 1,
+    },
+    upload: {
+      target: 'temporary-public-storage',
+    },
+  },
+};
+````
+
 ## File: next-env.d.ts
 ````typescript
 /// <reference types="next" />
@@ -8042,86 +8073,6 @@ const nextConfig = {
   },
 };
 module.exports = nextConfig;
-````
-
-## File: package.json
-````json
-{
-  "name": "nextjs-woocommerce",
-  "version": "1.2.5",
-  "private": true,
-  "scripts": {
-    "lhci": "lhci autorun",
-    "lhci:perf": "lhci autorun --collect.settings.preset=perf",
-    "lhci:desktop": "lhci autorun --collect.settings.preset=desktop",
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
-    "playwright": "npx playwright test",
-    "playwright:ui": "npx playwright test --ui",
-    "playwright:debug": "npx playwright test --debug",
-    "playwright:codegen": "playwright codegen",
-    "doctor": "echo n | react-doctor --verbose",
-    "doctor:score": "echo n | react-doctor --score",
-    "refresh": "rm -rf node_modules && rm package-lock.json && npm i && npm run format"
-  },
-  "keywords": [
-    "next.js",
-    "next",
-    "javascript",
-    "framer"
-  ],
-  "author": "w3bdesign",
-  "license": "AGPL-3.0",
-  "dependencies": {
-    "@apollo/client": "^3.14.1",
-    "@types/react": "^19.2.14",
-    "algoliasearch": "^4.27.0",
-    "autoprefixer": "^10.5.0",
-    "graphql": "^16.14.0",
-    "gsap": "^3.15.0",
-    "i18next": "^26.0.10",
-    "lodash": "^4.18.1",
-    "motion": "^12.38.0",
-    "next": "^16.2.6",
-    "next-i18next": "^16.0.6",
-    "next-themes": "^0.4.6",
-    "nprogress": "^0.2.0",
-    "postcss": "^8.5.14",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
-    "react-hook-form": "^7.75.0",
-    "react-i18next": "^17.0.7",
-    "react-instantsearch-dom": "^6.40.4",
-    "uuid": "^14.0.0",
-    "zustand": "^5.0.13"
-  },
-  "devDependencies": {
-    "@lhci/cli": "^0.15.1",
-    "@playwright/test": "^1.59.1",
-    "@types/lodash": "^4.17.24",
-    "@types/node": "24.12.2",
-    "@types/nprogress": "^0.2.3",
-    "@types/react-instantsearch-dom": "^6.12.9",
-    "@typescript-eslint/eslint-plugin": "^8.59.2",
-    "@typescript-eslint/parser": "^8.59.2",
-    "babel-plugin-styled-components": "^2.1.4",
-    "eslint-config-next": "^16.2.5",
-    "postcss-preset-env": "^11.2.1",
-    "prettier": "^3.8.3",
-    "react-doctor": "^0.0.47",
-    "tailwindcss": "^3.4.19",
-    "typescript": "^6.0.3"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "unrs-resolver"
-    ]
-  }
-}
 ````
 
 ## File: postcss.config.js
@@ -12736,6 +12687,92 @@ export async function logout() {
   clearAuthSession();
   if (typeof window !== 'undefined') {
     window.location.href = '/login';
+  }
+}
+````
+
+## File: package.json
+````json
+{
+  "name": "nextjs-woocommerce",
+  "version": "1.2.5",
+  "private": true,
+  "scripts": {
+    "lhci": "lhci autorun",
+    "lhci:perf": "lhci autorun --collect.settings.preset=perf",
+    "lhci:desktop": "lhci autorun --collect.settings.preset=desktop",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
+    "playwright": "npx playwright test",
+    "playwright:ui": "npx playwright test --ui",
+    "playwright:debug": "npx playwright test --debug",
+    "playwright:codegen": "playwright codegen",
+    "doctor": "echo n | react-doctor --verbose",
+    "doctor:score": "echo n | react-doctor --score",
+    "refresh": "rm -rf node_modules && rm package-lock.json && npm i && npm run format"
+  },
+  "keywords": [
+    "next.js",
+    "next",
+    "javascript",
+    "framer"
+  ],
+  "author": "w3bdesign",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@apollo/client": "^3.14.1",
+    "@types/react": "^19.2.14",
+    "algoliasearch": "^4.27.0",
+    "autoprefixer": "^10.5.0",
+    "graphql": "^16.14.0",
+    "gsap": "^3.15.0",
+    "i18next": "^26.0.10",
+    "lodash": "^4.18.1",
+    "motion": "^12.38.0",
+    "next": "^16.2.11",
+    "next-i18next": "^16.0.6",
+    "next-themes": "^0.4.6",
+    "nprogress": "^0.2.0",
+    "postcss": "^8.5.18",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "react-hook-form": "^7.75.0",
+    "react-i18next": "^17.0.7",
+    "react-instantsearch-dom": "^6.40.4",
+    "uuid": "^14.0.0",
+    "zustand": "^5.0.13"
+  },
+  "overrides": {
+    "next": "^16.2.11",
+    "postcss": "^8.5.18",
+    "sharp": "^0.35.1",
+    "nanoid": "^3.3.18"
+  },
+  "devDependencies": {
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.59.1",
+    "@types/lodash": "^4.17.24",
+    "@types/node": "24.12.2",
+    "@types/nprogress": "^0.2.3",
+    "@types/react-instantsearch-dom": "^6.12.9",
+    "@typescript-eslint/eslint-plugin": "^8.59.2",
+    "@typescript-eslint/parser": "^8.59.2",
+    "babel-plugin-styled-components": "^2.1.4",
+    "eslint-config-next": "^16.2.5",
+    "postcss-preset-env": "^11.2.1",
+    "prettier": "^3.8.3",
+    "react-doctor": "^0.0.47",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^6.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }
 ````
