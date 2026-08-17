@@ -53,8 +53,8 @@ const RangeSlider = ({
         className="w-full cursor-pointer"
       />
       <div className="flex justify-between mt-4">
-        <span className="text-[10px] uppercase tracking-widest text-text-muted">{formatValue(startValue)}</span>
-        <span className="text-[10px] uppercase tracking-widest text-white font-bold">{formatValue(value)}</span>
+        <span className="text-[10px] uppercase tracking-widest text-kn-stone font-bold">{formatValue(startValue)}</span>
+        <span className="text-[10px] uppercase tracking-widest text-kn-forest font-bold">{formatValue(value)}</span>
       </div>
     </div>
   );

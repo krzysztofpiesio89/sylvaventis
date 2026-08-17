@@ -33,16 +33,16 @@ export default function CartDrawer() {
     <div className="fixed inset-0 z-[100] flex justify-end">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-kn-charcoal/40 backdrop-blur-sm transition-opacity"
         onClick={() => setIsOpen(false)}
       />
 
       {/* Drawer */}
-      <div className="relative w-full max-w-md bg-obsidian/95 backdrop-blur-xl border-l border-white/5 h-full shadow-2xl flex flex-col animate-slide-in">
+      <div className="relative w-full max-w-md bg-kn-cream/95 backdrop-blur-xl border-l border-kn-sand h-full shadow-2xl flex flex-col animate-slide-in">
         
         {/* Header */}
-        <div className="p-8 border-b border-white/5 flex items-center justify-between">
-          <h2 className="text-xl font-bold uppercase tracking-widest text-white">Experience Bag</h2>
+        <div className="p-8 border-b border-kn-sand flex items-center justify-between">
+          <h2 className="text-xl font-bold uppercase tracking-widest text-kn-bark">Warenkorb</h2>
           <button 
             onClick={() => setIsOpen(false)}
             className="text-[10px] uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
@@ -71,7 +71,7 @@ export default function CartDrawer() {
             <div className="space-y-8">
               {cart.products.map((item: any) => (
                 <div key={item.cartKey} className="flex gap-6 group">
-                  <div className="relative w-20 h-24 bg-white/5 overflow-hidden">
+                  <div className="relative w-20 h-24 bg-kn-cream-warm overflow-hidden rounded-sm shadow-sm border border-kn-sand/50">
                     <Image
                       src={item.image?.sourceUrl || '/images/placeholder.jpg'}
                       alt={item.name}
@@ -80,16 +80,16 @@ export default function CartDrawer() {
                     />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-white mb-2">{item.name}</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-kn-charcoal mb-2">{item.name}</h3>
                     {item.variation && (
-                      <p className="text-[9px] uppercase tracking-widest text-accent mb-2">
+                      <p className="text-[9px] uppercase tracking-widest text-kn-moss mb-2">
                         {item.variation.name}
                       </p>
                     )}
                     <div className="flex items-center justify-between mt-4">
-                      <p className="text-[10px] text-text-muted uppercase tracking-widest">Qty: {item.qty}</p>
+                      <p className="text-[10px] text-kn-stone uppercase tracking-widest">Qty: {item.qty}</p>
                       <div className="flex items-center gap-4">
-                        <p className="text-xs font-bold text-white">
+                        <p className="text-xs font-bold text-kn-bark">
                           {item.totalPrice}
                         </p>
                         <button
@@ -98,7 +98,7 @@ export default function CartDrawer() {
                           className="p-2 -mr-2 group/remove disabled:opacity-50"
                           title="Remove item"
                         >
-                          <svg className="w-3 h-3 text-text-light group-hover/remove:text-error transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3 text-kn-fog group-hover/remove:text-error transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
@@ -113,22 +113,22 @@ export default function CartDrawer() {
 
         {/* Footer */}
         {cart && cart.products && cart.products.length > 0 && (
-          <div className="p-8 bg-white/5 border-t border-white/5 space-y-6">
+          <div className="p-8 bg-kn-cream-warm border-t border-kn-sand space-y-6">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] uppercase tracking-widest text-text-muted">Subtotal</span>
-              <span className="text-xl font-bold text-white">
+              <span className="text-[10px] uppercase tracking-widest text-kn-stone">Subtotal</span>
+              <span className="text-xl font-bold text-kn-charcoal">
                 {cart.totalProductsPrice}
               </span>
             </div>
-            <p className="text-[9px] text-text-light uppercase tracking-[0.2em] leading-relaxed">
-              Shipping &amp; taxes calculated at checkout. Free shipping over €150.
+            <p className="text-[9px] text-kn-fog uppercase tracking-[0.2em] leading-relaxed">
+              Shipping &amp; taxes calculated at checkout. Free shipping over €80 in AT.
             </p>
             <Link 
               href="/checkout"
-              className="btn-premium w-full !text-obsidian py-5 flex items-center justify-center font-bold uppercase tracking-widest"
+              className="relative overflow-hidden px-8 py-5 bg-kn-forest text-kn-cream w-full flex items-center justify-center font-bold uppercase tracking-[0.2em] text-[10px] transition-all duration-500 hover:bg-kn-moss hover:scale-[1.02] active:scale-95 shadow-lg shadow-kn-forest/20"
               onClick={() => setIsOpen(false)}
             >
-              Checkout Experience
+              Zur Kasse
             </Link>
           </div>
         )}

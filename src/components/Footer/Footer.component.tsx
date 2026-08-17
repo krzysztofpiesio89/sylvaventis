@@ -12,16 +12,13 @@ const Footer = () => {
           
           {/* Brand Column */}
           <div className="space-y-8">
-            <div className="relative w-56 h-12">
-              <Image 
-                src="https://www.amanitasale.com/wp-content/uploads/2024/10/cropped-cropped-logo_amanita-1.webp"
-                alt="Amanita Sale"
-                fill
-                className="object-contain"
-              />
-            </div>
-            <p className="text-text-muted text-sm leading-relaxed max-w-xs font-light">
-              Bridging the gap between ancient botanical wisdom and modern biological standards. Hand-selected specimens from the pristine northern forests.
+            <Link href="/" className="inline-block">
+              <h2 className="text-2xl font-serif text-text tracking-widest uppercase">
+                Sylvaventis
+              </h2>
+            </Link>
+            <p className="text-text-muted text-sm leading-relaxed max-w-xs font-sans">
+              Die Brücke zwischen altem botanischem Wissen und modernen Qualitätsstandards. Handverlesene Naturprodukte.
             </p>
             <div className="flex items-center gap-6">
               {/* Social Icons - SVGs */}
@@ -42,43 +39,43 @@ const Footer = () => {
 
           {/* Navigation Column */}
           <div className="space-y-8">
-            <h3 className="text-[10px] uppercase tracking-[0.3em] font-bold text-accent">Collection</h3>
+            <h3 className="text-[10px] uppercase tracking-[0.3em] font-accent font-bold text-accent">Kollektion</h3>
             <ul className="space-y-4">
-              <li><Link href="/products" className="text-sm text-text-muted hover:text-white transition-colors font-light">All Products</Link></li>
-              <li><Link href="/categories" className="text-sm text-text-muted hover:text-white transition-colors font-light">Categories</Link></li>
-              <li><Link href="/new-arrivals" className="text-sm text-text-muted hover:text-white transition-colors font-light">New Arrivals</Link></li>
-              <li><Link href="/limited-editions" className="text-sm text-text-muted hover:text-white transition-colors font-light">Limited Editions</Link></li>
+              <li><Link href="/products" className="text-sm text-text-muted hover:text-text transition-colors font-sans">Alle Produkte</Link></li>
+              <li><Link href="/categories" className="text-sm text-text-muted hover:text-text transition-colors font-sans">Kategorien</Link></li>
+              <li><Link href="/new-arrivals" className="text-sm text-text-muted hover:text-text transition-colors font-sans">Neuheiten</Link></li>
+              <li><Link href="/limited-editions" className="text-sm text-text-muted hover:text-text transition-colors font-sans">Limitierte Editionen</Link></li>
             </ul>
           </div>
 
           {/* Company Column */}
           <div className="space-y-8">
-            <h3 className="text-[10px] uppercase tracking-[0.3em] font-bold text-accent">Experience</h3>
+            <h3 className="text-[10px] uppercase tracking-[0.3em] font-accent font-bold text-accent">Unternehmen</h3>
             <ul className="space-y-4">
-              <li><Link href="/about" className="text-sm text-text-muted hover:text-white transition-colors font-light">Our Story</Link></li>
-              <li><Link href="/process" className="text-sm text-text-muted hover:text-white transition-colors font-light">The Process</Link></li>
-              <li><Link href="/science" className="text-sm text-text-muted hover:text-white transition-colors font-light">Science &amp; Safety</Link></li>
-              <li><Link href="/contact" className="text-sm text-text-muted hover:text-white transition-colors font-light">Contact Us</Link></li>
+              <li><Link href="/about" className="text-sm text-text-muted hover:text-text transition-colors font-sans">Über uns</Link></li>
+              <li><Link href="/process" className="text-sm text-text-muted hover:text-text transition-colors font-sans">Unser Prozess</Link></li>
+              <li><Link href="/science" className="text-sm text-text-muted hover:text-text transition-colors font-sans">Wissenschaft & Sicherheit</Link></li>
+              <li><Link href="/contact" className="text-sm text-text-muted hover:text-text transition-colors font-sans">Kontakt</Link></li>
             </ul>
           </div>
 
           {/* Legal Column */}
           <div className="space-y-8">
-            <h3 className="text-[10px] uppercase tracking-[0.3em] font-bold text-accent">Information</h3>
+            <h3 className="text-[10px] uppercase tracking-[0.3em] font-accent font-bold text-accent">Rechtliches</h3>
             <ul className="space-y-4">
-              <li><Link href="/terms" className="text-sm text-text-muted hover:text-white transition-colors font-light">Terms &amp; Conditions</Link></li>
-              <li><Link href="/privacy" className="text-sm text-text-muted hover:text-white transition-colors font-light">Privacy Policy</Link></li>
-              <li><Link href="/shipping" className="text-sm text-text-muted hover:text-white transition-colors font-light">Shipping Policy</Link></li>
-              <li><Link href="/cookies" className="text-sm text-text-muted hover:text-white transition-colors font-light">Cookie Preferences</Link></li>
+              <li><Link href="/pages/agb" className="text-sm text-text-muted hover:text-text transition-colors font-sans">AGB</Link></li>
+              <li><Link href="/pages/datenschutz" className="text-sm text-text-muted hover:text-text transition-colors font-sans">Datenschutzerklärung</Link></li>
+              <li><Link href="/pages/impressum" className="text-sm text-text-muted hover:text-text transition-colors font-sans">Impressum</Link></li>
+              <li><Link href="/pages/widerruf" className="text-sm text-text-muted hover:text-text transition-colors font-sans">Widerrufsrecht</Link></li>
             </ul>
           </div>
 
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-[10px] uppercase tracking-[0.4em] text-text-muted font-light" suppressHydrationWarning>
-            &copy; {currentYear} Amanita Sale. Crafted for the enlightened.
+        <div className="pt-12 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-[10px] uppercase tracking-[0.4em] text-text-muted font-sans" suppressHydrationWarning>
+            &copy; {currentYear} Sylvaventis. Schätze der Natur.
           </div>
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-2">

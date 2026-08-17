@@ -4,6 +4,7 @@ import { getUniqueProductTypes } from '@/utils/functions/productUtils';
 
 export const useProductFilters = (products: Product[]) => {
   const [sortBy, setSortBy] = useState('popular');
+  const [inStockOnly, setInStockOnly] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
@@ -20,6 +21,7 @@ export const useProductFilters = (products: Product[]) => {
   };
 
   const resetFilters = () => {
+    setInStockOnly(false);
     setSelectedSizes([]);
     setSelectedColors([]);
     setPriceRange([0, 1000]);
@@ -30,6 +32,11 @@ export const useProductFilters = (products: Product[]) => {
 
   const filterProducts = (products: Product[]) => {
     const filtered = products?.filter((product: Product) => {
+      // Filter by In Stock only
+      if (inStockOnly && product.stockStatus === 'OUT_OF_STOCK') {
+        return false;
+      }
+
       // Filter by price
       const productPrice = parseFloat(product.price.replace(/[^0-9,]/g, '').replace(',', '.'));
       const withinPriceRange =
@@ -68,8 +75,17 @@ export const useProductFilters = (products: Product[]) => {
       return true;
     });
 
-    // Sort products
+    // Sort products: ALWAYS prioritize IN_STOCK items first!
     return [...(filtered || [])].sort((a, b) => {
+      // Priority 1: In stock items first
+      const isOutA = a.stockStatus === 'OUT_OF_STOCK' ? 1 : 0;
+      const isOutB = b.stockStatus === 'OUT_OF_STOCK' ? 1 : 0;
+
+      if (isOutA !== isOutB) {
+        return isOutA - isOutB;
+      }
+
+      // Priority 2: Selected sort option
       const priceA = parseFloat(a.price.replace(/[^0-9,]/g, '').replace(',', '.'));
       const priceB = parseFloat(b.price.replace(/[^0-9,]/g, '').replace(',', '.'));
 
@@ -89,6 +105,8 @@ export const useProductFilters = (products: Product[]) => {
   return {
     sortBy,
     setSortBy,
+    inStockOnly,
+    setInStockOnly,
     selectedSizes,
     setSelectedSizes,
     selectedColors,

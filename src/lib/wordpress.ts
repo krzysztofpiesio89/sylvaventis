@@ -1,4 +1,4 @@
-const endpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL || 'https://amanitasale.com/graphql';
+const endpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL || 'http://api.sylvaventis.com/graphql';
 
 export async function wpFetch<T>(
   query: string, 

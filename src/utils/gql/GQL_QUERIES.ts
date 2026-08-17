@@ -175,11 +175,16 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
  */
 export const FETCH_ALL_CATEGORIES_QUERY = gql`
   query Categories {
-    productCategories(first: 20) {
+    productCategories(first: 100) {
       nodes {
         id
+        databaseId
         name
         slug
+        count
+        image {
+          sourceUrl
+        }
       }
     }
   }

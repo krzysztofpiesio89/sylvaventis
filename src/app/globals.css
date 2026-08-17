@@ -3,34 +3,67 @@
 @tailwind utilities;
 
 :root {
-  /* Obsidian Theme Palette */
-  --color-obsidian: #0A0A0B;
-  --color-obsidian-alt: #161618;
-  --color-accent: #FFD799; /* Lightened Gold for contrast */
-  --color-accent-gold: #C5A059;
+  /* Sylvaventis NATURE PALETTE — "Waldgeist" */
+  --kn-cream: #FAF6F0;
+  --kn-cream-warm: #F3EDE2;
+  --kn-parchment: #E8DFD0;
   
-  --color-surface: #0A0A0B;
-  --color-surface-card: #1C1C1E;
-  --color-border: #2C2C2E;
+  --kn-forest: #2D4A2E;
+  --kn-moss: #4A6741;
+  --kn-sage: #7A8B6F;
+  --kn-mint: #C5D4BC;
   
-  --color-text: #F2F2F7;
-  --color-text-muted: #8E8E93;
-  --color-text-dim: #48484A;
+  --kn-bark: #5C3D2E;
+  --kn-amber: #B8863A;
+  --kn-terracotta: #A65D3F;
+  --kn-sand: #C9B896;
+  
+  --kn-charcoal: #1A1612;
+  --kn-stone: #6B635A;
+  --kn-fog: #9B9488;
+  --kn-white: #FFFFFF;
 
-  --color-success: #32D74B;
-  --color-error: #FF453A;
+  /* Mappings to existing variables for compatibility */
+  --color-obsidian: var(--kn-cream);
+  --color-obsidian-alt: var(--kn-cream-warm);
+  --color-accent: var(--kn-forest);
+  --color-accent-gold: var(--kn-moss);
+  
+  --color-surface: var(--kn-cream);
+  --color-surface-card: var(--kn-white);
+  --color-border: var(--kn-parchment);
+  
+  --color-text: var(--kn-charcoal);
+  --color-text-muted: var(--kn-stone);
+  --color-text-dim: var(--kn-fog);
 
-  /* About Page Palette */
-  --color-cream: #f0ebe0;
-  --color-sand: #d4c9a8;
-  --color-brown: #5c3d2e;
-  --color-charcoal: #1a1612;
-  --color-moss: #3d4a2f;
-  --color-gold: #b8953f;
-  --color-rust: #7a3b2e;
+  --color-success: var(--kn-moss);
+  --color-error: var(--kn-terracotta);
 
   --font-serif: var(--font-serif), serif;
-  --font-syne: var(--font-syne), sans-serif;
+  --font-sans: var(--font-sans), sans-serif;
+  --font-outfit: var(--font-outfit), sans-serif;
+}
+
+.dark {
+  --kn-cream: #1A1612;      /* Becomes charcoal */
+  --kn-cream-warm: #201D1A; /* Becomes slightly lighter charcoal */
+  --kn-parchment: #2C2622;  /* Darker border */
+  
+  --kn-forest: #C5D4BC;     /* Mint for contrast */
+  --kn-moss: #7A8B6F;       /* Sage for hover states */
+  --kn-sage: #4A6741;
+  --kn-mint: #2D4A2E;
+  
+  --kn-bark: #E8DFD0;       /* Parchment for headings */
+  --kn-amber: #B8863A;      /* Keep amber */
+  --kn-terracotta: #A65D3F; /* Keep terracotta */
+  --kn-sand: #3D352F;       /* Darker sand for borders */
+  
+  --kn-charcoal: #FAF6F0;   /* Cream for text */
+  --kn-stone: #9B9488;      /* Keep fog for muted text */
+  --kn-fog: #6B635A;
+  --kn-white: #111111;      /* Almost black for pure white backgrounds */
 }
 
 @layer base {
@@ -41,6 +74,7 @@
   body {
     background-color: var(--color-obsidian);
     color: var(--color-text);
+    font-family: var(--font-sans);
     font-feature-settings: "ss01", "ss02", "cv01", "cv11";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -76,17 +110,16 @@
 
   .btn-premium {
     @apply relative overflow-hidden px-8 py-4 bg-white text-obsidian font-bold uppercase tracking-[0.2em] text-[10px] 
-    transition-all duration-500 hover:bg-accent hover:text-white hover:scale-105 active:scale-95;
+    transition-all duration-500 hover:bg-accent hover:text-kn-cream hover:scale-105 active:scale-95;
   }
 
-  .checkout-input {
-    @apply w-full bg-white/5 border border-white/10 px-6 py-4 text-sm text-white placeholder:text-text-dim
-    focus:outline-none focus:border-accent focus:bg-white/10 transition-all duration-300 rounded-none font-light;
+  .checkout-input-premium {
+    @apply w-full bg-white dark:bg-stone-900/90 border border-stone-300 dark:border-stone-800 px-5 py-4 text-sm text-stone-900 dark:text-stone-100 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all duration-300 rounded-2xl font-sans shadow-sm;
   }
 
   /* Fix for select options visibility */
-  .checkout-input option {
-    @apply bg-obsidian text-white;
+  .checkout-input-premium option {
+    @apply bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100;
   }
 
   /* Browser Autofill Reset */
@@ -166,9 +199,13 @@
 }
 
 /* Typography Overrides */
-h1, h2, h3, .font-display {
-  font-family: var(--font-outfit);
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-serif);
   letter-spacing: -0.02em;
+}
+
+.font-accent {
+  font-family: var(--font-outfit);
 }
 
 /* Grid & Layout Utilities */

@@ -31,26 +31,20 @@ const Navbar = () => {
       }`}
     >
       <div 
-        className={`max-w-7xl mx-auto glass rounded-full px-8 py-4 flex items-center justify-between transition-all duration-500 ${
-          isScrolled ? 'shadow-2xl scale-[0.98]' : ''
+        className={`max-w-7xl mx-auto rounded-full px-8 py-4 flex items-center justify-between transition-all duration-500 border border-border ${
+          isScrolled ? 'bg-obsidian shadow-2xl scale-[0.98]' : 'bg-obsidian/80 backdrop-blur-md'
         }`}
       >
         <div className="flex items-center gap-12">
           <Link href="/" className="group block">
-            <div className="relative w-64 h-16">
-              <Image 
-                src="https://www.amanitasale.com/wp-content/uploads/2024/10/cropped-cropped-logo_amanita-1.webp"
-                alt="Amanita Sale"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+            <h1 className="text-2xl md:text-3xl font-serif text-text group-hover:text-accent-gold transition-colors tracking-widest uppercase">
+              Sylvaventis
+            </h1>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/products" className="text-[10px] uppercase tracking-[0.2em] font-bold text-white hover:text-accent-gold transition-colors">Products</Link>
-            <Link href="/categories" className="text-[10px] uppercase tracking-[0.2em] font-bold text-white hover:text-accent-gold transition-colors">Categories</Link>
+            <Link href="/products" className="text-[10px] uppercase tracking-[0.2em] font-accent font-bold text-text hover:text-accent-gold transition-colors">Produkte</Link>
+            <Link href="/categories" className="text-[10px] uppercase tracking-[0.2em] font-accent font-bold text-text hover:text-accent-gold transition-colors">Kategorien</Link>
           </div>
         </div>
 
@@ -66,7 +60,7 @@ const Navbar = () => {
             >
               <svg 
                 viewBox="0 0 24 24" 
-                className="w-5 h-5 fill-none stroke-white group-hover:stroke-accent-gold transition-colors duration-300" 
+                className="w-5 h-5 fill-none stroke-text group-hover:stroke-accent-gold transition-colors duration-300" 
                 strokeWidth="1.5" 
                 strokeLinecap="round" 
                 strokeLinejoin="round"
@@ -80,9 +74,9 @@ const Navbar = () => {
               )}
             </button>
             
-            <div className="w-px h-4 bg-white/10 hidden sm:block" />
+            <div className="w-px h-4 bg-border hidden sm:block" />
             
-            <Link href="/login" className="hidden sm:block text-[10px] uppercase tracking-[0.2em] font-bold text-white hover:text-accent-gold transition-colors">Account</Link>
+            <Link href="/login" className="hidden sm:block text-[10px] uppercase tracking-[0.2em] font-accent font-bold text-text hover:text-accent-gold transition-colors">Account</Link>
           </div>
         </div>
       </div>

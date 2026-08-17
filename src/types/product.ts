@@ -46,6 +46,7 @@ export interface Product {
   price: string;
   regularPrice: string;
   salePrice?: string;
+  stockStatus?: 'IN_STOCK' | 'OUT_OF_STOCK' | string;
   productCategories?: {
     nodes: ProductCategory[];
   };

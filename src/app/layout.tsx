@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
-import { Inter, Outfit, Cormorant_Garamond, Syne } from "next/font/google";
+import { Playfair_Display, Source_Sans_3, Outfit } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
-const syne = Syne({ subsets: ["latin"], variable: "--font-syne" });
-const cormorant = Cormorant_Garamond({ 
+const playfair = Playfair_Display({ 
   subsets: ["latin"], 
   variable: "--font-serif",
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic']
 });
+const sourceSans = Source_Sans_3({ subsets: ["latin"], variable: "--font-sans" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 export const metadata: Metadata = {
-  title: "Amanita Sale | Headless WordPress",
-  description: "High-performance ecommerce built with Next.js 15 and WordPress.",
+  title: "Sylvaventis | Räucherwerk & Kräuterpädagogik",
+  description: "Schätze der Natur aus Österreich & Weltweit. Finde zurück zu ganzheitlichem Wohlgefühl mit vergessenen Pflanzengeistern und wohltuendem Räucherwerk.",
   robots: {
     index: true,
     follow: true,
@@ -37,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable} ${cormorant.variable} ${syne.variable}`} suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang="de" className={`${playfair.variable} ${sourceSans.variable} ${outfit.variable}`} suppressHydrationWarning data-scroll-behavior="smooth">
       <body className="antialiased" suppressHydrationWarning>
         <Providers>
           {children}

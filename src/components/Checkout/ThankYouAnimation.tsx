@@ -42,8 +42,8 @@ const ThankYouAnimation = ({ onComplete }: ThankYouAnimationProps) => {
         this.speedX = Math.cos(angle) * velocity;
         this.speedY = Math.sin(angle) * velocity;
         
-        // Golden / Orange palette
-        const colors = ['#FFD700', '#FFA500', '#FF4500', '#FF8C00'];
+        // Forest / Earth palette
+        const colors = ['#2D4A2E', '#4A6741', '#B8863A', '#7A8B6F'];
         this.color = colors[Math.floor(Math.random() * colors.length)];
         
         this.maxLife = Math.random() * 60 + 40;

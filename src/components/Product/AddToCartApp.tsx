@@ -11,9 +11,10 @@ interface AddToCartProps {
   productId: number;
   variationId?: number;
   disabled?: boolean;
+  outOfStock?: boolean;
 }
 
-const AddToCartApp = ({ productId, variationId, disabled }: AddToCartProps) => {
+const AddToCartApp = ({ productId, variationId, disabled, outOfStock }: AddToCartProps) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const { isLoading: isCartLoading } = useCartStore();
 
@@ -43,29 +44,38 @@ const AddToCartApp = ({ productId, variationId, disabled }: AddToCartProps) => {
     },
     onError: (error) => {
       console.error('Add to Cart Error:', error);
-      alert('Failed to add product to cart. Please check your connection.');
+      const message = error?.message ? error.message.replace(/&quot;/g, '"') : 'Failed to add product to cart. Please check your connection.';
+      alert(message);
     }
   });
+
+  const isDisabled = loading || isCartLoading || disabled || outOfStock;
 
   return (
     <button 
       onClick={() => addToCart()}
-      disabled={loading || isCartLoading || disabled}
-      className={`btn-premium w-full !text-obsidian flex items-center justify-center gap-3 transition-all ${
-        isSuccess ? '!bg-success !text-white' : ''
-      } ${disabled ? 'opacity-50 grayscale cursor-not-allowed' : ''}`}
+      disabled={isDisabled}
+      className={`w-full px-8 py-4 flex items-center justify-center gap-3 transition-all duration-300 font-accent tracking-widest uppercase font-bold shadow-md hover:shadow-lg ${
+        isSuccess 
+          ? 'bg-success text-kn-cream' 
+          : isDisabled 
+            ? 'bg-kn-sand/50 text-kn-stone cursor-not-allowed'
+            : 'bg-kn-forest text-kn-cream hover:bg-kn-moss hover:scale-[1.02] active:scale-[0.98]'
+      }`}
     >
       {loading ? (
         <>
-          <span className="w-4 h-4 border-2 border-obsidian/30 border-t-obsidian rounded-full animate-spin" />
-          Adding...
+          <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          Hinzufügen...
         </>
       ) : isSuccess ? (
-        'Added to Experience'
+        'Hinzugefügt'
+      ) : outOfStock ? (
+        'Ausverkauft'
       ) : disabled ? (
-        'Select an Option'
+        'Variante wählen'
       ) : (
-        'Add to Experience'
+        'IN DEN WARENKORB'
       )}
     </button>
   );

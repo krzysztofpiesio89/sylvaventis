@@ -1,66 +1,86 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { LOGIN_USER } from './gql/GQL_MUTATIONS';
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { LOGIN_USER, CREATE_USER, LOGOUT_USER } from './gql/GQL_MUTATIONS';
 
-// Cookie-based authentication - no token storage needed
-export function hasCredentials() {
-  if (typeof window === 'undefined') {
-    return false; // Server-side, no credentials available
-  }
-  
-  // With cookie-based auth, we'll check if user is logged in through a query
-  // For now, we'll return false and let components handle the check
-  return false;
+const GRAPHQL_URI = process.env.NEXT_PUBLIC_GRAPHQL_URL || 'http://api.sylvaventis.com/graphql';
+
+export function getAuthToken(): string | null {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('sylva_auth_token');
 }
 
-export async function getAuthToken() {
-  // Cookie-based auth doesn't need JWT tokens
-  return null;
+export function getUser(): any | null {
+  if (typeof window === 'undefined') return null;
+  const userStr = localStorage.getItem('sylva_user');
+  if (!userStr) return null;
+  try {
+    return JSON.parse(userStr);
+  } catch {
+    return null;
+  }
+}
+
+export function hasCredentials(): boolean {
+  if (typeof window === 'undefined') return false;
+  return !!localStorage.getItem('sylva_auth_token') || !!localStorage.getItem('sylva_user');
+}
+
+export function setAuthSession(authToken: string, refreshToken?: string, user?: any) {
+  if (typeof window === 'undefined') return;
+  if (authToken) {
+    localStorage.setItem('sylva_auth_token', authToken);
+    document.cookie = `sylva_auth_token=${authToken}; path=/; max-age=2592000; SameSite=Lax`;
+  }
+  if (refreshToken) {
+    localStorage.setItem('sylva_refresh_token', refreshToken);
+  }
+  if (user) {
+    localStorage.setItem('sylva_user', JSON.stringify(user));
+  }
+}
+
+export function clearAuthSession() {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem('sylva_auth_token');
+  localStorage.removeItem('sylva_refresh_token');
+  localStorage.removeItem('sylva_user');
+  document.cookie = 'sylva_auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
 }
 
 function getErrorMessage(error: any): string {
-  // Check for GraphQL errors
   if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-    const graphQLError = error.graphQLErrors[0];
-    const message = graphQLError.message;
-    
-    // Map GraphQL error messages to user-friendly messages
-    switch (message) {
-      case 'invalid_username':
-        return 'Ugyldig brukernavn eller e-postadresse. Vennligst sjekk og prøv igjen.';
-      case 'incorrect_password':
-        return 'Feil passord. Vennligst sjekk passordet ditt og prøv igjen.';
-      case 'invalid_email':
-        return 'Ugyldig e-postadresse. Vennligst skriv inn en gyldig e-postadresse.';
-      case 'empty_username':
-        return 'Vennligst skriv inn brukernavn eller e-postadresse.';
-      case 'empty_password':
-        return 'Vennligst skriv inn passord.';
-      case 'too_many_retries':
-        return 'For mange mislykkede forsøk. Vennligst vent litt før du prøver igjen.';
-      default:
-        return 'Innlogging mislyktes. Vennligst sjekk dine opplysninger og prøv igjen.';
+    const message = error.graphQLErrors[0].message;
+    if (message.includes('Internal server error')) {
+      return 'Brak klucza JWT w wp-config.php! Dodaj do wp-config.php linijkę: define("GRAPHQL_JWT_AUTH_SECRET_KEY", "twoj-sekretny-klucz"); i upewnij się, że wtyczka WPGraphQL JWT jest aktywna.';
     }
+    if (message.includes('invalid_username') || message.includes('invalid_email') || message.includes('incorrect_password') || message.includes('invalid-secret-key')) {
+      return 'Nieprawidłowa nazwa użytkownika lub hasło. Sprawdź dane i spróbuj ponownie.';
+    }
+    if (message.includes('empty_username') || message.includes('empty_password')) {
+      return 'Proszę wprowadzić nazwę użytkownika oraz hasło.';
+    }
+    return message;
   }
-  
-  // Check for network errors
-  if (error.networkError) {
-    return 'Nettverksfeil. Vennligst sjekk internetttilkoblingen din og prøv igjen.';
-  }
-  
-  // Fallback for other errors
   if (error.message) {
-    return 'Det oppstod en feil under innlogging. Vennligst prøv igjen.';
+    if (error.message.includes('Internal server error')) {
+      return 'Wtyczka Headless Login wymaga zdefiniowanego klucza w wp-config.php. Dodaj: define("GRAPHQL_JWT_AUTH_SECRET_KEY", "sylvaventis-secret-key"); w wp-config.php';
+    }
+    return error.message;
   }
-  
-  return 'En ukjent feil oppstod. Vennligst prøv igjen senere.';
+  return 'Błąd logowania. Spróbuj ponownie później.';
 }
 
 export async function login(username: string, password: string) {
   try {
+    const httpLink = createHttpLink({
+      uri: GRAPHQL_URI,
+      fetchOptions: {
+        credentials: 'include',
+      },
+    });
+
     const client = new ApolloClient({
-      uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+      link: httpLink,
       cache: new InMemoryCache(),
-      credentials: 'include', // Include cookies in requests
     });
 
     const { data } = await client.mutate({
@@ -68,25 +88,56 @@ export async function login(username: string, password: string) {
       variables: { username, password },
     });
 
-    const loginResult = data.loginWithCookies;
+    const result = data?.login || data?.loginWithCookies;
 
-    if (loginResult.status !== 'SUCCESS') {
-      throw new Error('Innlogging mislyktes. Vennligst sjekk dine opplysninger og prøv igjen.');
+    if (!result) {
+      throw new Error('Logowanie nie powiodło się.');
     }
 
-    // On successful login, cookies are automatically set by the server
-    return { success: true, status: loginResult.status };
+    const authToken = result.authToken || 'logged_in';
+    const refreshToken = result.refreshToken;
+    const user = result.user || { name: username, email: username };
+
+    setAuthSession(authToken, refreshToken, user);
+
+    return { success: true, user, token: authToken };
   } catch (error: unknown) {
-    const userFriendlyMessage = getErrorMessage(error);
-    throw new Error(userFriendlyMessage);
+    const msg = getErrorMessage(error);
+    throw new Error(msg);
+  }
+}
+
+export async function registerCustomer(data: {
+  username: string;
+  email: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+}) {
+  try {
+    const client = new ApolloClient({
+      uri: GRAPHQL_URI,
+      cache: new InMemoryCache(),
+    });
+
+    const res = await client.mutate({
+      mutation: CREATE_USER,
+      variables: data,
+    });
+
+    if (res.data?.registerCustomer?.customer) {
+      // Auto login after registration
+      return await login(data.username, data.password);
+    }
+    throw new Error('Rejestracja nie powiodła się.');
+  } catch (error: any) {
+    throw new Error(getErrorMessage(error));
   }
 }
 
 export async function logout() {
-  // For cookie-based auth, we might need a logout mutation
-  // For now, we can clear any client-side state
+  clearAuthSession();
   if (typeof window !== 'undefined') {
-    // Redirect to login or home page after logout
-    window.location.href = '/';
+    window.location.href = '/login';
   }
 }

@@ -26,7 +26,7 @@ const Checkbox = ({ id, label, checked, onChange }: ICheckboxProps) => {
         checked={checked}
         onChange={onChange}
       />
-      <span className="ml-3 text-sm font-light text-text-muted group-hover:text-white transition-colors uppercase tracking-widest">
+      <span className="ml-3 text-[10px] font-bold text-kn-stone group-hover:text-kn-forest transition-colors uppercase tracking-widest">
         {label}
       </span>
     </label>
