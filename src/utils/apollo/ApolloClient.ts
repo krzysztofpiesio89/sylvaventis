@@ -91,7 +91,7 @@ const isServerSide = typeof window === 'undefined';
 
 // Wyznaczamy pełny adres URL dla zapytań po stronie serwera
 const graphqlUri = isServerSide
-  ? process.env.NEXT_PUBLIC_GRAPHQL_URL!
+  ? (process.env.NEXT_PUBLIC_GRAPHQL_URL || 'http://api.sylvaventis.com/graphql')
   : '/api/graphql';
 
 // Apollo GraphQL client.

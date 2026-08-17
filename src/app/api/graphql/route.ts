@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const targetUrl = process.env.NEXT_PUBLIC_GRAPHQL_URL!;
+    const targetUrl = process.env.NEXT_PUBLIC_GRAPHQL_URL || 'http://api.sylvaventis.com/graphql';
     const wooSession = request.headers.get('woocommerce-session');
     const cookies = request.headers.get('cookie');
 
