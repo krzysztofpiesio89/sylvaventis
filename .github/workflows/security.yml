@@ -38,7 +38,6 @@ jobs:
       - name: Run Semgrep with OWASP rules
         run: |
           semgrep scan \
-            --config .semgrep/ \
             --config "p/owasp-top-ten" \
             --config "p/javascript" \
             --config "p/typescript" \

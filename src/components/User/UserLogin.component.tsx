@@ -27,7 +27,7 @@ const UserLogin = () => {
     setError(null);
     try {
       const result = await login(data.username, data.password);
-      if (result.success && result.status === 'SUCCESS') {
+      if (result.success) {
         push('/min-konto');
       } else {
         throw new Error('Failed to login');

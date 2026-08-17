@@ -5,7 +5,7 @@ import { Product } from '@/types/product';
 import { useProductFilters } from '@/hooks/useProductFilters';
 import ProductCard from './ProductCard.component';
 import ProductFilters from './ProductFilters.component';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next/pages';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface ProductListProps {
